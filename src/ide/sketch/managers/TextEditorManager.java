@@ -36,6 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 
+
 /*
  * Created on Apr 12, 2005
  * Barbara Lerner
@@ -126,32 +127,45 @@ public class TextEditorManager
 
 	public void replaceSelection(JTextPane editor, String replace) 
         {
-
+            
 		String editorText = editor.getText();
-
+                
 		String start = editorText.substring (0, editor.getSelectionStart());
 		String end = editorText.substring (editor.getSelectionEnd());
 
 		editorText = start + replace + end;
+                if(editor.getSelectionStart() < editor.getSelectionEnd() ) 
 		editor.setText (editorText);
 	}
 
 	public void search(JTextPane editor, String searchValue, boolean caseSensitive) 
         {
-		String editorText = editor.getText();
+		String editorText = "";
+                try {
+                    editorText = editor.getStyledDocument().getText(0, editor.getStyledDocument().getLength());
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(TextEditorManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
 				
-		if (caseSensitive) {
+		if (!caseSensitive) {
 			editorText = editorText.toLowerCase();
 			searchValue = searchValue.toLowerCase();
 		}
 		
 		int start;
-		start = editorText.lastIndexOf(searchValue, editor.getSelectionStart()-1);
-
-		if (start != -1) {
-			editor.setCaretPosition (start);
-			editor.moveCaretPosition (start + searchValue.length());
-			editor.getCaret().setSelectionVisible(true);
-		}
+		start = editorText.indexOf(searchValue, editor.getSelectionEnd());
+                
+		if (start != -1) 
+                {
+		  editor.setCaretPosition (start);
+		  editor.moveCaretPosition (start + searchValue.length());
+		  editor.getCaret().setSelectionVisible(true);      
+                }
+                else if(editorText.indexOf(searchValue, 0) != -1)
+                {
+                    editor.setCaretPosition(0);
+                    search(editor,searchValue,caseSensitive);
+                }
+                
 	}
 }

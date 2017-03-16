@@ -84,7 +84,7 @@ public class LineNumberManager extends JPanel
 		setFont( component.getFont() );
 
 		setBorderGap( 5 );
-		setCurrentLineForeground( Color.BLUE );
+		setCurrentLineForeground( Color.GRAY );
 		setDigitAlignment( RIGHT );
 		setMinimumDisplayDigits( minimumDisplayDigits );
 
@@ -151,47 +151,22 @@ public class LineNumberManager extends JPanel
 		return currentLineForeground == null ? getForeground() : currentLineForeground;
 	}
 
-	/**
-	 *  The Color used to render the current line digits. Default is Coolor.RED.
-	 *
-	 *  @param currentLineForeground  the Color used to render the current line
-	 */
 	public void setCurrentLineForeground(Color currentLineForeground)
 	{
 		this.currentLineForeground = currentLineForeground;
 	}
 
-	/**
-	 *  Gets the digit alignment
-	 *
-	 *  @return the alignment of the painted digits
-	 */
+
 	public float getDigitAlignment()
 	{
 		return digitAlignment;
 	}
-
-	/**
-	 *  Specify the horizontal alignment of the digits within the component.
-	 *  Common values would be:
-	 *  <ul>
-	 *  <li>TextLineNumber.LEFT
-	 *  <li>TextLineNumber.CENTER
-	 *  <li>TextLineNumber.RIGHT (default)
-	 *	</ul>
-	 *  @param currentLineForeground  the Color used to render the current line
-	 */
 	public void setDigitAlignment(float digitAlignment)
 	{
 		this.digitAlignment =
 			digitAlignment > 1.0f ? 1.0f : digitAlignment < 0.0f ? -1.0f : digitAlignment;
 	}
 
-	/**
-	 *  Gets the minimum display digits
-	 *
-	 *  @return the minimum display digits
-	 */
 	public int getMinimumDisplayDigits()
 	{
 		return minimumDisplayDigits;
