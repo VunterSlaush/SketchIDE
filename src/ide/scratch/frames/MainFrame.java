@@ -37,8 +37,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     public static int CTRL_KEY_CODE = 17;
     public static int SCAPE_KEY_CODE = 27;
-    public static int MAX_FONT_SIZE = 25;
-    public static int MIN_FONT_SIZE = 10;
+    public static int MAX_FONT_SIZE = 30;
+    public static int MIN_FONT_SIZE = 16;
     File file;
     boolean ctrlPressed;
     int fontSize;
@@ -47,7 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        fontSize = 14;
+        fontSize = 16;
         initComponents();
         initLineNumber();
         initTextPane();

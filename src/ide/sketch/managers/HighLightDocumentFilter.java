@@ -5,6 +5,7 @@
  */
 package ide.sketch.managers;
 
+import ide.sketch.resources.WordsPainter;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,6 @@ public class HighLightDocumentFilter extends DocumentFilter
     private final StyledDocument styledDocument;
     private final JTextPane pane;
     private final StyleContext styleContext = StyleContext.getDefaultStyleContext();
-    private final AttributeSet greenAttributeSet = styleContext.addAttribute(styleContext.getEmptySet(), StyleConstants.Foreground, Color.BLUE);
     private final AttributeSet blackAttributeSet = styleContext.addAttribute(styleContext.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
     
     // Use a regular expression to find the words you are looking for
@@ -40,7 +40,8 @@ public class HighLightDocumentFilter extends DocumentFilter
                                "while", "return","goto",
                                "continue", "true", "false",
                                "include","unsigned","word",
-                               "string", "String"
+                               "string", "String","([0-9])+"
+                              
                               };
     Pattern pattern = buildPattern();
     public HighLightDocumentFilter(JTextPane comp)
@@ -119,8 +120,17 @@ public class HighLightDocumentFilter extends DocumentFilter
        
         while (matcher.find()) 
         {
-            styledDocument.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), greenAttributeSet, false);
+            styledDocument.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(),
+                    generateAttributeSetForWord(styledDocument.getText(matcher.start(), matcher.end() - matcher.start()))
+                    , false);
         }
+    }
+    
+    private AttributeSet generateAttributeSetForWord(String word)
+    {
+        AttributeSet set = styleContext.addAttribute(styleContext.getEmptySet(), StyleConstants.Foreground, 
+                WordsPainter.getInstance().getColor(word));
+        return set;
     }
 
 }
