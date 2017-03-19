@@ -40,7 +40,19 @@ public class HighLightDocumentFilter extends DocumentFilter
                                "while", "return","goto",
                                "continue", "true", "false",
                                "include","unsigned","word",
-                               "string", "String","([0-9])+"
+                               "string", "String","([0-9])+","setup", "loop","#define", "#include",
+                              "HIGH", "LOW", "INPUT", "OUTPUT", "INPUT_PULLUP","LED_BUILTIN", "true", "false",
+                              "char", "byte", "int", "word", "long", "float",
+                              "variable_scope", "static", "volatile", "const","sizeof", "PROGMEM", 
+                              "pinMode", "digitalWrite", "digitalRead", "analogReference", "analogRead", "analogWrite",
+                              "analogReadResolution", "analogWriteResolution","tone", "noTone", "shiftOut", 
+                              "shiftIn", "pulseIn","millis", "micros" , "delay", "delayMicroseconds", 
+                              "mmin", "max", "abs" , "constrain", "map", "pow", "sqrt", 
+                              "sin", "cos", "tan", "isAlphaNumeric", "isAlpha", "isAscii", "isWhitespace", 
+                              "isControl", "isDigit", "isGraph", "isLowerCase", "isPrintable", "isPunct", "isSpace",
+                              "isUpperCase", "isHexadecimalDigit","randomSeed", "random","lowByte", "highByte", 
+                              "bitRead", "bitWrite", "bitSet", "bitClear", "bit", "attachInterrupt", 
+                              "detachInterrupt", "interrupts", "noInterrupts", "Serial", "Stream","Keyboard" , "Mouse", 
                               
                               };
     Pattern pattern = buildPattern();

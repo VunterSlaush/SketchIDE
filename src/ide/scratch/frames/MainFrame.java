@@ -5,8 +5,13 @@
  */
 package ide.scratch.frames;
 
+//import ide.sketch.compiler.Yylex;
+//import ide.sketch.compiler.parser;
+import ide.sketch.compiler.Yylex;
+import ide.sketch.compiler.parser;
 import ide.sketch.managers.HighLightDocumentFilter;
 import ide.sketch.managers.LineNumberManager;
+import ide.sketch.managers.ScreenOutManager;
 import ide.sketch.managers.TextEditorManager;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,13 +23,18 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeListener;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.KeyStroke;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
@@ -56,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         addHighLiter();
         panelOpciones.setVisible(false);
         resultadoPanel.setVisible(false);
+        ScreenOutManager.getInstance().changeScreen(resultPane);
     }
 
     /**
@@ -81,8 +92,9 @@ public class MainFrame extends javax.swing.JFrame {
         replaceAllBtn = new javax.swing.JButton();
         resultadoPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        resultPane = new javax.swing.JTextPane();
+        okResultButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         newFileItem = new javax.swing.JMenuItem();
@@ -91,7 +103,6 @@ public class MainFrame extends javax.swing.JFrame {
         saveAsItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         findMenuItem = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -180,21 +191,29 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Resultado de la Compilacion");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        jScrollPane3.setViewportView(resultPane);
+
+        okResultButton.setText("OK");
+        okResultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okResultButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout resultadoPanelLayout = new javax.swing.GroupLayout(resultadoPanel);
         resultadoPanel.setLayout(resultadoPanelLayout);
         resultadoPanelLayout.setHorizontalGroup(
             resultadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(resultadoPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(resultadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(resultadoPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2)))
+                        .addContainerGap()
+                        .addComponent(jLabel3))
+                    .addGroup(resultadoPanelLayout.createSequentialGroup()
+                        .addGap(236, 236, 236)
+                        .addComponent(okResultButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         resultadoPanelLayout.setVerticalGroup(
             resultadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +221,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(okResultButton))
         );
 
         jMenu1.setText("Archivo");
@@ -243,9 +264,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         menuBar.add(jMenu2);
 
-        jMenu3.setText("Ejecutar");
-        menuBar.add(jMenu3);
-
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -263,14 +281,14 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fileNameTextView)
                 .addGap(18, 18, 18)
                 .addComponent(panelOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultadoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addContainerGap())
         );
 
         pack();
@@ -318,6 +336,10 @@ public class MainFrame extends javax.swing.JFrame {
         TextEditorManager.getInstance().search(textPane, findTextField.getText(), this.checkCaseSensitive.isSelected());
     }//GEN-LAST:event_sigButtonActionPerformed
 
+    private void okResultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okResultButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_okResultButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkCaseSensitive;
@@ -329,17 +351,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem newFileItem;
+    private javax.swing.JButton okResultButton;
     private javax.swing.JMenuItem openFileItem;
     private javax.swing.JPanel panelOpciones;
     private javax.swing.JButton replaceAllBtn;
     private javax.swing.JButton replaceButton;
     private javax.swing.JTextField replaceTextField;
+    private javax.swing.JTextPane resultPane;
     private javax.swing.JPanel resultadoPanel;
     private javax.swing.JMenuItem saveAsItem;
     private javax.swing.JMenuItem saveFileItem;
@@ -367,7 +389,7 @@ public class MainFrame extends javax.swing.JFrame {
     {
         Font myFont;
         try {
-            myFont = Font.createFont(Font.TRUETYPE_FONT,new File("consolas.ttf"));
+            myFont = Font.createFont(Font.TRUETYPE_FONT,new File("courier.ttf"));
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             myFont = new Font("serif", Font.PLAIN, size);
@@ -424,7 +446,32 @@ public class MainFrame extends javax.swing.JFrame {
                 resizeFont(e.getUnitsToScroll() < 0);    
             }
         });
-        
+        JButton button = new JButton("Ejecutar");
+        button.setOpaque(true);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScreenOutManager.getInstance().clearScreen();
+                compilar();
+                resultadoPanel.setVisible(true);
+                if(resultPane.getText().isEmpty())
+                {
+                    resultPane.setText("Analisis exitoso!");
+                }
+            }
+        });
+        menuBar.add(button);
+        okResultButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+              resultadoPanel.setVisible(false);
+            }
+        });
         
     }
     
@@ -443,5 +490,24 @@ public class MainFrame extends javax.swing.JFrame {
         ((AbstractDocument) textPane.getDocument()).setDocumentFilter(new HighLightDocumentFilter(textPane));
     }
     
-    
+    private void compilar()
+    {   
+        
+        try 
+        {   
+            InputStream stream;
+            if(file != null)
+            {
+                stream = new FileInputStream(file);
+                
+            }else
+            {
+                stream = new ByteArrayInputStream(textPane.getText().getBytes(StandardCharsets.UTF_8));
+            }
+            new parser(new Yylex(stream)).parse();
+        } catch (Exception ex) 
+        {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
