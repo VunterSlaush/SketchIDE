@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/SketchIDE/src/ide/sketch/resources/WordsPainter.java</file>
-            <file>file:/D:/SketchIDE/src/ide/sketch/managers/HighLightDocumentFilter.java</file>
-            <file>file:/D:/SketchIDE/src/ide/scratch/frames/MainFrame.java</file>
+            <file>file:/C:/Users/user/Documents/SketchIDE/src/ide/sketch/managers/HighLightDocumentFilter.java</file>
+            <file>file:/C:/Users/user/Documents/SketchIDE/src/ide/scratch/frames/MainFrame.java</file>
+            <file>file:/C:/Users/user/Documents/SketchIDE/src/ide/sketch/managers/LineNumberManager.java</file>
+            <file>file:/C:/Users/user/Documents/SketchIDE/src/ide/sketch/resources/WordsPainter.java</file>
         </group>
     </open-files>
 </project-private>

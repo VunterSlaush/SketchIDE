@@ -229,6 +229,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu1.setText("Archivo");
 
         newFileItem.setText("Nuevo");
+        newFileItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newFileItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(newFileItem);
 
         openFileItem.setText("Abrir");
@@ -339,6 +344,13 @@ public class MainFrame extends javax.swing.JFrame {
     private void okResultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okResultButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_okResultButtonActionPerformed
+
+    private void newFileItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileItemActionPerformed
+        saveFileItemActionPerformed(evt);
+        textPane.setText("");
+        file = null;
+        fileNameTextView.setText("Archivo nuevo");
+    }//GEN-LAST:event_newFileItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
